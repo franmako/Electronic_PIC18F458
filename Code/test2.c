@@ -8,6 +8,7 @@ int temp;
 
 void main()
 {
+int seuil= 25;
 //theoriquement ca convertit le signal analogique en digital
   // float value, value1; //<------ changed to float from int16 
    setup_adc(ADC_CLOCK_INTERNAL);  // initialize ADC with a sampling rate of Crystal/4 MHz
@@ -23,23 +24,23 @@ void main()
 //renvoie 1 a gauche si la temp<=10
 //renvoie 8 a droite si la temp>10
 
-  while (1)
-   { 
-         digital_reading = read_adc();    // capture current temperature reading
-      delay_us(50);                   // 0.1ms delay for ADC stabilization
-      temp =(int)(((digital_reading /125)/1.05)+1);
-    delay_ms(50); 
+  while (1){ 
+  digital_reading = read_adc();    // capture current temperature reading
+  delay_us(50);                   // 0.1ms delay for ADC stabilization
+  temp =(int)(((digital_reading /125)/1.05)+1);
+  delay_ms(50); 
     
 
-    //fait clignoter la led si la température est plus grande que 24
-         if(temp>=25){
-            output_high(PIN_C0);
-            delay_ms(50);
-            output_low(PIN_C0);
-            delay_ms(50);
-         }
+  //fait clignoter la led si la température est plus grande que 24
+  if(temp >= seuil){
+   output_high(PIN_C0);
+   delay_ms(50);
+   output_low(PIN_C0);
+   delay_ms(50);
+   putc('A');
+  }
          
-         //determine ce qu'on envoye au décodeur en fct de la température
+   //determine ce qu'on envoye au décodeur en fct de la température
 
          if(temp%10== 0){
          output_low(PIN_D0);
